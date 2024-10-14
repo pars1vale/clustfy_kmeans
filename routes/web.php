@@ -18,5 +18,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/chartjs', function () {
+    return view('chartjs');
+});
+
 Route::get('/clustering', [KMeansController::class, 'index'])->name('clustering.index');
 Route::post('/clustering/process', [KMeansController::class, 'processClustering'])->name('clustering.process');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
