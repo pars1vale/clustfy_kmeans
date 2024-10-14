@@ -15,6 +15,7 @@
 
   <!-- Stack for additional CSS -->
   @stack('styles')
+  @vite(['resources/js/app.js'])
 </head>
 
 <body>

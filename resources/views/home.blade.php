@@ -102,7 +102,7 @@
                 <div style="position:absolute;width:200%;height:200%;left:0; top:0"></div>
               </div>
             </div>
-            <canvas id="myChart3" width="393" height="196" style="display: block; width: 393px; height: 196px;"
+            <canvas id="myChart" width="393" height="196" style="display: block; width: 393px; height: 196px;"
               class="chartjs-render-monitor"></canvas>
           </div>
         </div>
