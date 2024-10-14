@@ -64,28 +64,9 @@
           </div>
         </div>
       </div>
-
-
-
-      {{-- <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-        <div class="card card-statistic-1">
-          <div class="card-icon bg-success">
-            <i class="fas fa-circle"></i>
-          </div>
-          <div class="card-wrap">
-            <div class="card-header">
-              <h4>Online Users</h4>
-            </div>
-            <div class="card-body">
-              47
-            </div>
-          </div>
-        </div>
-      </div> --}}
-
     </div>
     <div class="row">
-      <div class="col-12 col-md-6 col-lg-6">
+      <div class="col-12 col-md-4 col-lg-4">
         <div class="card">
           <div class="card-header">
             <h4>Doughnut Chart</h4>
@@ -102,7 +83,7 @@
                 <div style="position:absolute;width:200%;height:200%;left:0; top:0"></div>
               </div>
             </div>
-            <canvas id="myChart" width="393" height="196" style="display: block; width: 393px; height: 196px;"
+            <canvas id="myChart" width="200" height="196" style="display: block; width: 200px; height: 196px;"
               class="chartjs-render-monitor"></canvas>
           </div>
         </div>

@@ -7,13 +7,11 @@
   <title>@yield('title', 'Clustering')</title>
   {{-- <link rel="shortcut icon" href="{{ asset('assets/landing/images/service-image.png') }}" type="image/svg+xml"> --}}
 
-  <!-- General CSS Files -->
   <link rel="stylesheet" href="{{ asset('assets/stisla/css/bootstrap.min.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/plugins/fontawesome-free/css/all.min.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/stisla/css/style.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/stisla/css/components.css') }}">
 
-  <!-- Stack for additional CSS -->
   @stack('styles')
   @vite(['resources/js/app.js'])
 </head>
@@ -44,8 +42,6 @@
     </div>
   </div>
 
-
-  <!-- General JS Scripts -->
   <script src="{{ asset('assets/stisla/js/jquery.min.js') }}"></script>
   <script src="{{ asset('assets/stisla/js/popper.min.js') }}"></script>
   <script src="{{ asset('assets/stisla/js/bootstrap.min.js') }}"></script>
@@ -57,8 +53,6 @@
   <script src="{{ asset('assets/stisla/js/page/chart.min.js') }}"></script>
   <script src="{{ asset('assets/stisla/js/page/modules-chartjs.js') }}"></script>
 
-
-  <!-- Stack for additional scripts -->
   @stack('scripts')
 </body>
 
