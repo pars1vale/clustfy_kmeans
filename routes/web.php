@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AttributeController;
 use App\Http\Controllers\KMeansController;
 use Illuminate\Support\Facades\Route;
 
@@ -28,3 +29,4 @@ Route::post('/clustering/process', [KMeansController::class, 'processClustering'
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::resource('attributes', AttributeController::class)->names('attributes');
