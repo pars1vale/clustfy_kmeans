@@ -9,22 +9,11 @@ class Datapoint extends Model
 {
     use HasFactory;
     protected $table = 'datapoint';
-    protected $fillable = ['name', 'type', 'attribute_id'];
-    // Relasi dengan Attribute (Many to One)
-    public function attribute()
-    {
-        return $this->belongsTo(Attribute::class, 'attribute_id');
-    }
+    protected $fillable = ['name', 'type'];
 
-    // Relasi dengan Centroid (One to Many)
-    public function centroids()
+    // Relasi many-to-many dengan Attribute
+    public function attributes()
     {
-        return $this->hasMany(Centroid::class);
-    }
-
-    // Relasi dengan ClusteringResult (One to Many)
-    public function clusteringResults()
-    {
-        return $this->hasMany(ClusteringResult::class);
+        return $this->belongsToMany(Attribute::class, 'datapoint_attribute')->withPivot('value');
     }
 }

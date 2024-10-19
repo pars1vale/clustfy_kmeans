@@ -27,7 +27,13 @@
           <td>{{ $datapoint->type }}</td>
           @foreach ($attributes as $attribute)
             <!-- Menampilkan nilai berdasarkan attribute_id di tiap datapoint -->
-            <td>{{ $datapoint->attribute_id == $attribute->id ? $datapoint->getAttributeValue($attribute->name) : 'N/A' }}</td>
+            <td>
+              @php
+                // Mengambil nilai dari pivot table
+                $pivot = $datapoint->attributes->where('id', $attribute->id)->first();
+              @endphp
+              {{ $pivot ? $pivot->pivot->value : 'N/A' }}
+            </td>
           @endforeach
         </tr>
       @endforeach

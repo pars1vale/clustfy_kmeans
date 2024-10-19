@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->enum('type', ['framework', 'library']);
-            $table->unsignedBigInteger('attribute_id')->nullable();
-            $table->foreign('attribute_id')->references('id')->on('attribute')->onDelete('cascade');
+            // $table->unsignedBigInteger('attribute_id')->nullable();
+            // $table->foreign('attribute_id')->references('id')->on('attribute')->onDelete('cascade');
             $table->timestamps();
         });
     }

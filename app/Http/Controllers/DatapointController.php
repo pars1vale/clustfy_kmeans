@@ -14,16 +14,14 @@ class DatapointController extends Controller
      */
     public function index()
     {
-        // Ambil semua datapoint
-        $datapoints = Datapoint::all();
+        // Ambil semua datapoint beserta atribut yang terkait
+        $datapoints = Datapoint::with('attributes')->get();
 
         // Ambil semua atribut yang ada di tabel attribute
         $attributes = Attribute::all();
 
         // Kembalikan view dengan data datapoint dan attribute
         return view('datapoint.index', compact('datapoints', 'attributes'));
-        // $datapoints = Datapoint::all();
-        // return view('datapoint.index');
     }
 
     /**
@@ -47,14 +45,14 @@ class DatapointController extends Controller
         $validated = $request->validate([
             'name' => 'required|string',
             'type' => 'required|in:framework,library',
-            'attributes.*' => 'required|numeric', // Pastikan semua atribut yang diinputkan valid
+            'attributes.*' => 'required|numeric', // Validasi untuk setiap atribut
         ]);
 
         // Simpan data ke tabel datapoint
-        $datapoint = new DataPoint();
-        $datapoint->name = $validated['name'];
-        $datapoint->type = $validated['type'];
-        $datapoint->save();
+        $datapoint = Datapoint::create([
+            'name' => $validated['name'],
+            'type' => $validated['type'],
+        ]);
 
         // Simpan data attributes yang diinputkan user
         foreach ($validated['attributes'] as $attribute_id => $value) {
@@ -62,8 +60,9 @@ class DatapointController extends Controller
         }
 
         // Redirect setelah berhasil menyimpan
-        return redirect()->route('datapoint.index')->with('success', 'DataPoint berhasil disimpan');
+        return redirect()->route('datapoints.index')->with('success', 'Datapoint berhasil disimpan');
     }
+
 
     /**
      * Display the specified resource.

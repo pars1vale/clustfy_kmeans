@@ -10,8 +10,10 @@ class Attribute extends Model
     use HasFactory;
     protected $table = 'attribute';
     protected $fillable = ['name', 'description'];
+
+    // Relasi many-to-many dengan Datapoint
     public function datapoints()
     {
-        return $this->hasMany(Datapoint::class, 'attribute_id');
+        return $this->belongsToMany(Datapoint::class, 'datapoint_attribute')->withPivot('value');
     }
 }
