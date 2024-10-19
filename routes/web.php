@@ -30,3 +30,4 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::resource('attributes', AttributeController::class)->names('attributes');
+Route::get('/attributes/search-ajax', [AttributeController::class, 'searchAjax'])->name('attributes.search.ajax');
