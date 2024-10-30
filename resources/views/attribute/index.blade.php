@@ -28,13 +28,15 @@
             </div>
             <div class="table-responsive">
               <table class="table table-bordered table-md">
-                <tbody>
+                <thead>
                   <tr>
                     <th>#</th>
                     <th>Name</th>
                     <th>Description</th>
                     <th>Action</th>
                   </tr>
+                </thead>
+                <tbody>
                   <tr>
                     @foreach ($attributes as $attribute)
                   <tr>
