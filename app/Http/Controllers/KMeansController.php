@@ -4,117 +4,127 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Datapoint;
+use App\Models\Attribute;
 use App\Models\Centroid;
 use App\Models\ClusteringResult;
-use DB;
 
 class KMeansController extends Controller
 {
-    // Menampilkan form untuk menentukan jumlah cluster dan memilih titik centroid
     public function index()
     {
+        // Fetch all datapoints and attributes (for an empty initial state)
         $datapoints = Datapoint::all();
-        return view('kmeans.index', compact('datapoints'));
+        $attributes = Attribute::all();
+
+        // Set initial clustering and centroid data to empty arrays
+        $iterations = [];
+        $finalCentroids = [];
+
+        return view('clustering.index', compact('datapoints', 'attributes', 'iterations', 'finalCentroids'));
     }
 
-    // Proses clustering
-    public function processClustering(Request $request)
+    public function startClustering(Request $request)
     {
-        $clusters = $request->input('clusters'); // Jumlah cluster
-        $selectedCentroids = $request->input('centroids'); // Titik centroid yang dipilih user
+        // Request input for number of clusters and initial centroid points
+        $numClusters = $request->input('num_clusters');
 
-        // Inisialisasi centroid berdasarkan input user
-        $centroids = [];
-        foreach ($selectedCentroids as $clusterNumber => $datapointId) {
-            $datapoint = Datapoint::find($datapointId);
-            $centroids[$clusterNumber] = $datapoint;
+        // Validate the input
+        if (!$numClusters || $numClusters < 1) {
+            return redirect()->back()->with('error', 'Please enter a valid number of clusters.');
         }
 
-        // Iterasi K-Means
+        // Fetch all datapoints to be clustered
+        $datapoints = Datapoint::with('attributes')->get();
+
+        // Initialize centroids manually based on user input
+        $initialCentroids = $this->initializeCentroids($numClusters, $datapoints);
+
+        // Run the K-Means clustering process
+        list($iterations, $finalCentroids) = $this->performKMeansClustering($datapoints, $initialCentroids, $numClusters);
+
+        // Redirect back to the clustering page with updated data
+        return view('clustering.index', compact('datapoints', 'iterations', 'finalCentroids'));
+    }
+
+    private function initializeCentroids($numClusters, $datapoints)
+    {
+        $centroids = [];
+
+        // Populate centroids based on user input (assuming manual selection for now)
+        for ($i = 0; $i < $numClusters; $i++) {
+            $centroids[$i] = []; // Placeholder to fill with user's chosen centroids for each attribute
+        }
+
+        return $centroids;
+    }
+
+    private function performKMeansClustering($datapoints, $initialCentroids, $numClusters)
+    {
         $iterations = [];
-        $maxIterations = 100; // limit iterasi
-        for ($i = 0; $i < $maxIterations; $i++) {
-            $iterationResults = [];
+        $centroids = $initialCentroids;
+        $maxIterations = 100;
 
-            // Reset hasil clustering sebelumnya
-            ClusteringResult::truncate();
+        for ($iteration = 0; $iteration < $maxIterations; $iteration++) {
+            $clusters = [];
 
-            foreach (Datapoint::all() as $datapoint) {
-                $minDistance = null;
-                $closestCentroid = null;
+            // Step 1: Assign datapoints to the nearest centroid
+            foreach ($datapoints as $datapoint) {
+                $distances = [];
 
-                // Hitung jarak ke setiap centroid
-                foreach ($centroids as $clusterNumber => $centroid) {
-                    $distance = $this->calculateDistance($datapoint, $centroid);
-
-                    if ($minDistance === null || $distance < $minDistance) {
-                        $minDistance = $distance;
-                        $closestCentroid = $clusterNumber;
-                    }
+                foreach ($centroids as $index => $centroid) {
+                    $distance = $this->calculateDistance($datapoint->attributes, $centroid);
+                    $distances[$index] = $distance;
                 }
 
-                // Simpan hasil ke database
-                ClusteringResult::create([
-                    'datapoint_id' => $datapoint->id,
-                    'centroid_id' => $centroids[$closestCentroid]->id,
-                    'cluster_number' => $closestCentroid,
-                    'distance' => $minDistance,
-                ]);
-
-                $iterationResults[] = [
-                    'datapoint' => $datapoint,
-                    'cluster' => $closestCentroid,
-                    'distance' => $minDistance,
-                ];
+                $closestCentroid = array_search(min($distances), $distances);
+                $clusters[$closestCentroid][] = $datapoint;
             }
 
-            // Simpan hasil iterasi
-            $iterations[] = $iterationResults;
+            // Step 2: Update centroids based on the mean of the clusters
+            $newCentroids = $this->recalculateCentroids($clusters);
 
-            // Update centroid baru
-            $newCentroids = $this->recalculateCentroids($iterations[$i], $clusters);
-
-            // Periksa jika centroid tidak berubah
-            if ($centroids == $newCentroids) {
+            // Check if centroids have stabilized
+            if ($newCentroids == $centroids) {
                 break;
             }
 
             $centroids = $newCentroids;
+            $iterations[] = $clusters; // Store each iteration result for display
         }
 
-        // Tampilkan hasil akhir dan iterasi
-        return view('kmeans.results', compact('iterations'));
+        return [$iterations, $centroids];
     }
 
-    // Menghitung jarak (Euclidean Distance)
-    private function calculateDistance($datapoint, $centroid)
+    private function calculateDistance($attributes, $centroid)
     {
-        // Implementasi logika jarak euclidean antara $datapoint dan $centroid
-        return sqrt(pow($datapoint->attribute_id - $centroid->attribute_id, 2));
+        // Calculate distance between datapoint attributes and centroid
+        $distance = 0;
+        foreach ($attributes as $attribute) {
+            $distance += pow($attribute->pivot->value - $centroid[$attribute->id], 2);
+        }
+        return sqrt($distance);
     }
 
-    // Menghitung ulang centroid
-    private function recalculateCentroids($iterationResults, $clusters)
+    private function recalculateCentroids($clusters)
     {
         $newCentroids = [];
-        foreach (range(0, $clusters - 1) as $clusterNumber) {
-            $clusterPoints = array_filter($iterationResults, function ($result) use ($clusterNumber) {
-                return $result['cluster'] == $clusterNumber;
-            });
 
-            if (!empty($clusterPoints)) {
-                $sumAttribute = array_reduce($clusterPoints, function ($carry, $point) {
-                    return $carry + $point['datapoint']->attribute_id;
-                }, 0);
+        foreach ($clusters as $index => $cluster) {
+            if (count($cluster) > 0) {
+                $centroid = [];
+                $attributesCount = count($cluster[0]->attributes);
 
-                $averageAttribute = $sumAttribute / count($clusterPoints);
+                foreach ($cluster as $datapoint) {
+                    foreach ($datapoint->attributes as $attribute) {
+                        $centroid[$attribute->id] = ($centroid[$attribute->id] ?? 0) + $attribute->pivot->value;
+                    }
+                }
 
-                // Cari datapoint terdekat dengan nilai rata-rata sebagai centroid baru
-                $closestToAverage = collect($clusterPoints)->sortBy(function ($point) use ($averageAttribute) {
-                    return abs($point['datapoint']->attribute_id - $averageAttribute);
-                })->first();
+                foreach ($centroid as $key => $totalValue) {
+                    $centroid[$key] = $totalValue / count($cluster);
+                }
 
-                $newCentroids[$clusterNumber] = $closestToAverage['datapoint'];
+                $newCentroids[$index] = $centroid;
             }
         }
 

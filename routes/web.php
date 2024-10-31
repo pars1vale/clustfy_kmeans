@@ -18,3 +18,5 @@ Route::resource('datapoints', DatapointController::class)->names('datapoints');
 
 Route::get('/clustering', [KMeansController::class, 'index'])->name('clustering.index');
 Route::post('/clustering/process', [KMeansController::class, 'processClustering'])->name('clustering.process');
+
+Route::post('/kmeans/start', [KMeansController::class, 'startClustering'])->name('kmeans.startClustering');

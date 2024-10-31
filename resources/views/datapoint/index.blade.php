@@ -20,7 +20,7 @@
           <div class="card-body">
             <div class="buttons">
               {{-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Aw, yeah!</button> --}}
-              <a href="{{ route('attributes.create') }}" class="btn btn-icon icon-left btn-primary"><i class="fas fa-plus"></i> add atribute</a>
+              <a href="{{ route('datapoints.create') }}" class="btn btn-icon icon-left btn-primary"><i class="fas fa-plus"></i> add atribute</a>
               <a href="#" class="btn btn-outline-primary">export as PDF</a>
               <a href="#" class="btn btn-outline-primary">export as CSV/.xls</a>
             </div>
