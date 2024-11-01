@@ -65,6 +65,39 @@
               </table>
             </div>
           </div>
+          <div class="container">
+            <h2>Buat DataPoint Baru</h2>
+
+            <form action="{{ route('datapoints.store') }}" method="POST">
+              @csrf
+
+              <!-- Input untuk name -->
+              <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}" required>
+              </div>
+
+              <!-- Input untuk type -->
+              <div class="form-group">
+                <label for="type">Type</label>
+                <select class="form-control" id="type" name="type" required>
+                  <option value="framework" {{ old('type') == 'framework' ? 'selected' : '' }}>Framework</option>
+                  <option value="library" {{ old('type') == 'library' ? 'selected' : '' }}>Library</option>
+                </select>
+              </div>
+
+              <!-- Looping untuk setiap attribute -->
+              @foreach ($attributes as $attribute)
+                <div class="form-group">
+                  <label for="attribute-{{ $attribute->id }}">{{ $attribute->name }}</label>
+                  <input type="number" class="form-control" id="attribute-{{ $attribute->id }}" name="attributes[{{ $attribute->id }}]"
+                    value="{{ old('attributes.' . $attribute->id) }}" required>
+                </div>
+              @endforeach
+
+              <button type="submit" class="btn btn-primary">Simpan</button>
+            </form>
+          </div>
           <div class="card-footer text-right">
             {{-- <nav class="d-inline-block">
               {{ $attributes->links('vendor.pagination.custom') }}

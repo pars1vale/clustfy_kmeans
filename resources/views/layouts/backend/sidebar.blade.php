@@ -21,7 +21,7 @@
             class="far fa-file-powerpoint"></i> <span>Datapoint</span></a></li>
       <li class="{{ request()->is('attributes') ? 'active' : '' }}"><a class="nav-link" href="{{ route('attributes.index') }}"><i
             class="fas fa-list-ol"></i><span>Atributes</span></a></li>
-      <li><a class="nav-link" href="blank.html"><i class="far fa-list-alt"></i><span>Clustering</span></a></li>
+      <li><a class="nav-link" href=""><i class="far fa-list-alt"></i><span>Clustering</span></a></li>
       <li class="menu-header">admin area</li>
       <li><a class="nav-link" href="blank.html"><i class="fas fa-users"></i><span>Pengguna</span></a></li>
     </ul>
