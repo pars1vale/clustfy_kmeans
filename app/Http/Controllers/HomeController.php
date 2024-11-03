@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Datapoint;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -23,6 +25,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $totalusers = User::count();
+        $totalframework = Datapoint::where('type', 'framework')->count();
+        $totallibrary = Datapoint::where('type', 'library')->count();
+        return view('home', compact('totalusers', 'totalframework', 'totallibrary'));
     }
 }

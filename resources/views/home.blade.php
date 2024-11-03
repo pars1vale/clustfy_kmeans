@@ -29,7 +29,7 @@
               <h4>Total User</h4>
             </div>
             <div class="card-body">
-              10
+              {{ $totalusers }}
             </div>
           </div>
         </div>
@@ -44,7 +44,7 @@
               <h4>Total Framework Terdata</h4>
             </div>
             <div class="card-body">
-              42
+              {{ $totalframework }}
             </div>
           </div>
         </div>
@@ -59,7 +59,7 @@
               <h4>Total Library Terdata</h4>
             </div>
             <div class="card-body">
-              1,201
+              {{ $totallibrary }}
             </div>
           </div>
         </div>
