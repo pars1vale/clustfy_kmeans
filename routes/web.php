@@ -4,6 +4,7 @@ use App\Http\Controllers\AttributeController;
 use App\Http\Controllers\ClusteringController;
 use App\Http\Controllers\DatapointController;
 use App\Http\Controllers\KMeansController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -16,6 +17,7 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::resource('attributes', AttributeController::class)->names('attributes');
 Route::resource('datapoints', DatapointController::class)->names('datapoints');
+Route::resource('users', UserController::class)->names('users')->only(['index']);
 
 Route::get('/clustering', [ClusteringController::class, 'showClusterForm'])->name('clustering.showClusterForm');
 Route::post('/clustering/step2', [ClusteringController::class, 'showCentroidForm'])->name('clustering.showCentroidForm');

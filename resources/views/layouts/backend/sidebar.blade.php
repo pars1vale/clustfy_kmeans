@@ -7,13 +7,6 @@
       <a href="{{ route('home') }}">Cl</a>
     </div>
     <ul class="sidebar-menu">
-      {{-- <li class="dropdown active">
-        <a href="#" class="nav-link has-dropdown"><i class="fas fa-fire"></i><span>Dashboard</span></a>
-        <ul class="dropdown-menu">
-          <li class="active"><a class="nav-link" href="index-0.html">General Dashboard</a></li>
-          <li><a class="nav-link" href="index.html">Ecommerce Dashboard</a></li>
-        </ul>
-      </li> --}}
       <li class=" {{ request()->is('home') ? 'active' : '' }}"><a class="nav-link" href="{{ route('home') }}"><i
             class="fas fa-fire"></i><span>Dashboard</span></a></li>
       <li class="menu-header">Cluster</li>
@@ -23,7 +16,8 @@
             class="fas fa-list-ol"></i><span>Atributes</span></a></li>
       <li><a class="nav-link" href="{{ route('clustering.showClusterForm') }}"><i class="far fa-list-alt"></i><span>Clustering</span></a></li>
       <li class="menu-header">admin area</li>
-      <li><a class="nav-link" href="blank.html"><i class="fas fa-users"></i><span>Pengguna</span></a></li>
+      <li class="{{ request()->is('users*') ? 'active' : '' }}"><a class="nav-link" href="{{ route('users.index') }}"><i
+            class="fas fa-users"></i><span>Users</span></a></li>
     </ul>
   </aside>
 </div>
