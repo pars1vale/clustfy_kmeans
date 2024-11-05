@@ -9,21 +9,10 @@ class Centroid extends Model
 {
     use HasFactory;
 
-    // Nama tabel yang digunakan
-    protected $table = 'centroid';
+    protected $fillable = ['name'];
 
-    // Field yang bisa diisi
-    protected $fillable = ['datapoint_id', 'value1', 'value2'];
-
-    // Relasi dengan Datapoint (Many to One)
-    public function datapoint()
+    public function attributes()
     {
-        return $this->belongsTo(Datapoint::class, 'datapoint_id');
-    }
-
-    // Relasi dengan ClusteringResult (One to Many)
-    public function clusteringResults()
-    {
-        return $this->hasMany(ClusteringResult::class);
+        return $this->belongsToMany(Attribute::class, 'centroid_attributes')->withPivot('value');
     }
 }

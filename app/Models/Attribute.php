@@ -16,4 +16,9 @@ class Attribute extends Model
     {
         return $this->belongsToMany(Datapoint::class, 'datapoint_attribute')->withPivot('value');
     }
+    // Relasi many-to-many dengan Centroid
+    public function centroids()
+    {
+        return $this->belongsToMany(Centroid::class, 'centroid_attributes')->withPivot('value');
+    }
 }
