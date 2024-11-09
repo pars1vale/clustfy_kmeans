@@ -28,15 +28,19 @@ class KMeansController extends Controller
     public function cluster(Request $request)
     {
         $k = $request->input('k');
-        $centroids = $this->initializeCentroidsFromInput($request); // Centroid dari input
-
-        $dataPoints = Datapoint::with('attributes')->get(); // Ambil data points beserta atributnya
+        $centroids = $this->initializeCentroidsFromInput($request);
+        $dataPoints = Datapoint::with('attributes')->get();
         $converged = false;
-        $clusters = []; // Array untuk menyimpan hasil clustering
+        $iterations = []; // Array to store each iteration result
+
+        // Variabel untuk menyimpan hasil akhir
+        $finalClusters = [];
+        $finalCentroids = [];
+        $finalDistanceTable = [];
 
         while (!$converged) {
             $clusters = [];
-            $distanceTable = []; // Array untuk menyimpan jarak
+            $distanceTable = [];
 
             // Step 3a: Assign each data point to the nearest centroid
             foreach ($dataPoints as $dataPoint) {
@@ -46,8 +50,6 @@ class KMeansController extends Controller
                 }
                 $closestCluster = array_search(min($distances), $distances);
                 $clusters[$closestCluster][] = $dataPoint;
-
-                // Simpan jarak ke distanceTable untuk digunakan di view
                 $distanceTable[$dataPoint->id] = $distances;
             }
 
@@ -57,17 +59,54 @@ class KMeansController extends Controller
                 $newCentroids[] = $this->calculateMeanCentroid($cluster);
             }
 
-            // Check for convergence
+            // Save the current iteration
+            $iterations[] = [
+                'clusters' => $clusters,
+                'centroids' => $centroids,
+                'distanceTable' => $distanceTable
+            ];
+
+            // Update hasil akhir untuk iterasi terakhir
+            $finalClusters = $clusters;
+            $finalCentroids = $centroids;
+            $finalDistanceTable = $distanceTable;
+
             $converged = $this->checkConvergence($centroids, $newCentroids);
             $centroids = $newCentroids;
         }
 
-        // Ambil semua atribut untuk diteruskan ke view
         $attributes = Attribute::all();
 
-        return view('kmeans.result', compact('clusters', 'centroids', 'distanceTable', 'attributes'));
+        // Save final result to session
+        session([
+            'finalClusters' => $finalClusters,
+            'finalCentroids' => $finalCentroids,
+            'finalDistanceTable' => $finalDistanceTable
+        ]);
+
+        // Redirect ke halaman iterasi
+        return view('kmeans.iterations', compact('iterations', 'attributes'))
+            ->with('finalClusters', $finalClusters)
+            ->with('finalCentroids', $finalCentroids)
+            ->with('finalDistanceTable', $finalDistanceTable);
     }
 
+    public function showFinalResult()
+    {
+        $attributes = Attribute::all();
+
+        // Ambil data dari session
+        $finalClusters = session('finalClusters');
+        $finalCentroids = session('finalCentroids');
+        $finalDistanceTable = session('finalDistanceTable');
+
+        return view('kmeans.result', [
+            'finalClusters' => $finalClusters,
+            'finalCentroids' => $finalCentroids,
+            'finalDistanceTable' => $finalDistanceTable,
+            'attributes' => $attributes
+        ]);
+    }
 
 
     // Fungsi bantu untuk inisialisasi centroid dari input pengguna

@@ -14,7 +14,8 @@
             <p class="lead">Lorem ipsum dolor sit amet consectetur adipisicing elit. In impedit id dolore harum nobis laboriosam aut aspernatur fuga
               aliquam blanditiis error incidunt magnam ipsum ad quas voluptatem tempore, eius doloremque!.</p>
             <div class="mt-4">
-              <a href="#" class="btn btn-outline-white btn-lg btn-icon icon-left"><i class="fas fa-level-up-alt"></i>See Visitors</a>
+              <a href="{{ route('users.index') }}" class="btn btn-outline-white btn-lg btn-icon icon-left"><i class="fas fa-level-up-alt"></i>See
+                Visitors</a>
             </div>
           </div>
         </div>

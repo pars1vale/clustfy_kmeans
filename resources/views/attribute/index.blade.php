@@ -1,5 +1,7 @@
 @extends('layouts.backend.app')
-
+@section('plugins_css')
+  <link rel="stylesheet" href="{{ asset('assets/stisla/modules/prism/prism.css') }}">
+@endsection
 @section('content')
   <section class="section">
     <div class="section-header">
@@ -9,7 +11,6 @@
         <div class="breadcrumb-item"><a href="{{ route('attributes.index') }}">Attributes</a></div>
       </div>
     </div>
-
     <div class="section-body">
       <h2 class="section-title">Data Attributes</h2>
       <p class="section-lead">Attribute berikut yang akan digunakan sebagai parameter untuk melakukan proses clustering</p>
@@ -17,11 +18,10 @@
         <div class="card">
           <div class="card-header">
             <h4>Attribute Table</h4>
-
           </div>
           <div class="card-body">
             <div class="buttons">
-              {{-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Aw, yeah!</button> --}}
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Aw, yeah!</button>
               <a href="{{ route('attributes.create') }}" class="btn btn-icon icon-left btn-primary"><i class="fas fa-plus"></i> add atribute</a>
               <a href="#" class="btn btn-outline-primary">export as PDF</a>
               <a href="#" class="btn btn-outline-primary">export as CSV/.xls</a>
@@ -37,18 +37,16 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    @foreach ($attributes as $attribute)
-                  <tr>
-                    <td>{{ $loop->iteration }}</td>
-                    <td>{{ $attribute->name }}</td>
-                    <td>{{ $attribute->description }}</td>
-                    <td>
-                      @include('attribute.action')
-                    </td>
-                  </tr>
+                  @foreach ($attributes as $attribute)
+                    <tr>
+                      <td>{{ $loop->iteration }}</td>
+                      <td>{{ $attribute->name }}</td>
+                      <td>{{ $attribute->description }}</td>
+                      <td>
+                        @include('attribute.action')
+                      </td>
+                    </tr>
                   @endforeach
-                  </tr>
                 </tbody>
               </table>
             </div>
@@ -63,7 +61,7 @@
     </div>
   </section>
 
-  {{-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -81,24 +79,19 @@
         </div>
       </div>
     </div>
-  </div> --}}
-  {{-- <div class="modal fade" tabindex="-1" role="dialog" id="exampleModal">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Modal title</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <p>Modal body text goes here.</p>
-        </div>
-        <div class="modal-footer bg-whitesmoke br">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
-        </div>
-      </div>
-    </div>
-  </div> --}}
+  </div>
+@endsection
+
+@section('plugins_js')
+  <script src="{{ asset('assets/stisla/modules/prism/prism.js') }}"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+@endsection
+
+@section('page_js')
+  <script>
+    $(document).ready(function() {
+      // Initialize modals and other dynamic elements if needed
+    });
+  </script>
 @endsection

@@ -1,58 +1,53 @@
-<!-- resources/views/kmeans/result.blade.php -->
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Clustering Result</title>
-</head>
-
-<body>
-  <h3>Clustering Result</h3>
-
+@if (!empty($finalClusters) && is_array($finalClusters))
   <table border="1">
     <thead>
       <tr>
         <th>#</th>
         <th>Name</th>
-        @for ($i = 1; $i <= count($centroids); $i++)
-          <th>Distance to Cluster {{ $i }}</th>
-        @endfor
+        @if (!empty($finalCentroids))
+          @for ($i = 1; $i <= count($finalCentroids); $i++)
+            <th>Distance to Cluster {{ $i }}</th>
+          @endfor
+        @endif
         <th>Assigned Cluster</th>
       </tr>
     </thead>
     <tbody>
-      @foreach ($clusters as $clusterIndex => $cluster)
+      @foreach ($finalClusters as $clusterIndex => $cluster)
         @foreach ($cluster as $index => $dataPoint)
           <tr>
             <td>{{ $index + 1 }}</td>
             <td>{{ $dataPoint->name }}</td>
-            @foreach ($distanceTable[$dataPoint->id] as $centroidIndex => $distance)
-              <td>{{ $distance }}</td>
-            @endforeach
+            @if (isset($finalDistanceTable[$dataPoint->id]))
+              @foreach ($finalDistanceTable[$dataPoint->id] as $centroidIndex => $distance)
+                <td>{{ $distance }}</td>
+              @endforeach
+            @endif
             <td>{{ $clusterIndex + 1 }}</td>
           </tr>
         @endforeach
       @endforeach
     </tbody>
-
   </table>
+@else
+  <p>No clustering data available to display.</p>
+@endif
 
-  <h3>Final Centroids</h3>
+<h3>Final Centroids</h3>
+@if (!empty($finalCentroids))
   <table border="1">
     <thead>
       <tr>
         <th>#</th>
         @foreach ($attributes as $attribute)
-          <th>{{ $attribute->name }}</th> <!-- Use attribute names here -->
+          <th>{{ $attribute->name }}</th>
         @endforeach
       </tr>
     </thead>
     <tbody>
-      @foreach ($centroids as $index => $centroid)
+      @foreach ($finalCentroids as $index => $centroid)
         <tr>
-          <td>centeroid-{{ $index + 1 }}</td>
+          <td>centroid-{{ $index + 1 }}</td>
           @foreach ($centroid->attributes as $attribute)
             <td>{{ $attribute->pivot->value }}</td>
           @endforeach
@@ -60,7 +55,6 @@
       @endforeach
     </tbody>
   </table>
-
-</body>
-
-</html>
+@else
+  <p>No centroids available to display.</p>
+@endif

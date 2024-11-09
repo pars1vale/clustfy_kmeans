@@ -8,9 +8,12 @@
   {{-- <link rel="shortcut icon" href="{{ asset('assets/landing/images/service-image.png') }}" type="image/svg+xml"> --}}
   <link rel="stylesheet" href="{{ asset('assets/stisla/css/bootstrap.min.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/plugins/fontawesome-free/css/all.min.css') }}">
+  @yield('styles')
   <link rel="stylesheet" href="{{ asset('assets/stisla/css/style.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/stisla/css/components.css') }}">
-  @stack('styles')
+  @yield('plugins_css')
+
+
   @vite(['resources/js/app.js'])
 </head>
 
@@ -35,21 +38,31 @@
       @include('layouts.backend.footer')
     </div>
   </div>
-
+  <!-- Load jQuery once -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="{{ asset('assets/stisla/js/jquery.min.js') }}"></script>
+
+  <!-- Load Popper.js, required by Bootstrap's JavaScript -->
   <script src="{{ asset('assets/stisla/js/popper.min.js') }}"></script>
+
+  <!-- Load Bootstrap's JavaScript -->
   <script src="{{ asset('assets/stisla/js/bootstrap.min.js') }}"></script>
+
+  <!-- Additional Libraries -->
   <script src="{{ asset('assets/stisla/js/jquery.nicescroll.min.js') }}"></script>
   <script src="{{ asset('assets/stisla/js/moment.min.js') }}"></script>
   <script src="{{ asset('assets/stisla/js/stisla.js') }}"></script>
+
+  <!-- Plugin scripts (e.g., Prism, if any are used on the page) -->
+  @yield('plugins_js')
+
+  <!-- Custom scripts for the page -->
   <script src="{{ asset('assets/stisla/js/scripts.js') }}"></script>
   <script src="{{ asset('assets/stisla/js/custom.js') }}"></script>
   <script src="{{ asset('assets/stisla/js/page/chart.min.js') }}"></script>
-  <script src="{{ asset('assets/stisla/js/page/modules-chartjs.js') }}"></script>
-  <script src="{{ asset('assets/stisla/js/page/bootstrap-modal.js') }}"></script>
-  <script src="{{ asset('assets/stisla/modules/prism/prism.js') }}"></script>
-  @stack('scripts')
+  {{-- <script src="{{ asset('assets/stisla/js/page/modules-chartjs.js') }}"></script> --}}
+
+  <!-- Optional: Uncomment if specific page JS is needed for modals -->
+  @yield('page_js')
 </body>
 
 </html>
