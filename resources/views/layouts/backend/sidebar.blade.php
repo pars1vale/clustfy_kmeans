@@ -1,10 +1,10 @@
 <div class="main-sidebar sidebar-style-2" tabindex="1" style="overflow: hidden; outline: none;">
   <aside id="sidebar-wrapper">
     <div class="sidebar-brand">
-      <a href="{{ route('home') }}">clustering</a>
+      <a href="{{ url('/') }}">clustering</a>
     </div>
     <div class="sidebar-brand sidebar-brand-sm">
-      <a href="{{ route('home') }}">Cl</a>
+      <a href="{{ url('/') }}">Cl</a>
     </div>
     <ul class="sidebar-menu">
       <li class=" {{ request()->is('home') ? 'active' : '' }}"><a class="nav-link" href="{{ route('home') }}"><i
