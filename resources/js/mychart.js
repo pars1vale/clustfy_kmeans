@@ -2,13 +2,13 @@ import Chart from 'chart.js/auto';
 
 const data = {
     labels: [
-        'Red',
-        'Blue',
-        'Yellow'
+        'cluster 1',
+        'cluster 2',
+        'cluster 3'
     ],
     datasets: [{
-        label: 'My First Dataset',
-        data: [300, 50, 100],
+        label: 'total Data ',
+        data: [78, 5, 75],
         backgroundColor: [
             'rgb(255, 99, 132)',
             'rgb(54, 162, 235)',

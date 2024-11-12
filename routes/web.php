@@ -22,8 +22,5 @@ Route::resource('users', UserController::class)->names('users')->only(['index'])
 
 Route::get('/kmeans/select-cluster', [KMeansController::class, 'showClusterModal'])->name('kmeans.select_cluster');
 Route::post('/kmeans/initialize-centroids', [KMeansController::class, 'initializeCentroids'])->name('kmeans.initialize_centroids');
-// Route untuk tampilan iterasi
 Route::post('/kmeans/cluster-iterations', [KMeansController::class, 'cluster'])->name('kmeans.cluster_iterations');
-
-// Route untuk tampilan hasil akhir clustering
 Route::get('/kmeans/result', [KMeansController::class, 'showFinalResult'])->name('kmeans.result');

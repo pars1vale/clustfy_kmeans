@@ -4,7 +4,7 @@
 <form action="{{ route('datapoints.destroy', $datapoint->id) }}" method="POST" style="display:inline;">
   @csrf
   @method('DELETE')
-  <button type="submit" class="btn btn-icon btn-warning" onclick="return confirm('Are you sure you want to delete this attribute?');">
+  <button type="submit" class="btn btn-icon btn-warning" onclick="return confirm('Are you sure you want to delete this data?');">
     <i class="fas fa-trash"></i>
   </button>
 </form>
