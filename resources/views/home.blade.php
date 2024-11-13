@@ -10,7 +10,7 @@
         <div class="hero text-white hero-bg-image"
           style="background-image: url('https://images.unsplash.com/photo-1618388810903-840bb0d15ea5?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');">
           <div class="hero-inner">
-            <h2>Welcome, nama user!</h2>
+            <h2>Welcome, {{ Auth::user()->name }} </h2>
             <p class="lead">Lorem ipsum dolor sit amet consectetur adipisicing elit. In impedit id dolore harum nobis laboriosam aut aspernatur fuga
               aliquam blanditiis error incidunt magnam ipsum ad quas voluptatem tempore, eius doloremque!.</p>
             <div class="mt-4">
