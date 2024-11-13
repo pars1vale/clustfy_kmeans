@@ -14,7 +14,7 @@
   @yield('plugins_css')
 
 
-  @vite(['resources/js/app.js'])
+  {{-- @vite(['resources/js/app.js']) --}}
 </head>
 
 <body>
@@ -61,7 +61,7 @@
   <script src="{{ asset('assets/stisla/js/page/chart.min.js') }}"></script>
   {{-- <script src="{{ asset('assets/stisla/js/page/modules-chartjs.js') }}"></script> --}}
 
-  <!-- Optional: Uncomment if specific page JS is needed for modals -->
+
   @yield('page_js')
 </body>
 

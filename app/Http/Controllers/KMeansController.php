@@ -25,6 +25,72 @@ class KMeansController extends Controller
     }
 
     // Step 3: Proses K-Means Clustering
+    // public function cluster(Request $request)
+    // {
+    //     $k = $request->input('k');
+    //     $centroids = $this->initializeCentroidsFromInput($request);
+    //     $dataPoints = Datapoint::with('attributes')->get();
+    //     $converged = false;
+    //     $iterations = []; // Array to store each iteration result
+
+    //     // Variabel untuk menyimpan hasil akhir
+    //     $finalClusters = [];
+    //     $finalCentroids = [];
+    //     $finalDistanceTable = [];
+
+    //     while (!$converged) {
+    //         $clusters = [];
+    //         $distanceTable = [];
+
+    //         // Step 3a: Assign each data point to the nearest centroid
+    //         foreach ($dataPoints as $dataPoint) {
+    //             $distances = [];
+    //             foreach ($centroids as $index => $centroid) {
+    //                 $distances[$index] = $this->calculateEuclideanDistance($dataPoint, $centroid);
+    //             }
+    //             $closestCluster = array_search(min($distances), $distances);
+    //             $clusters[$closestCluster][] = $dataPoint;
+    //             $distanceTable[$dataPoint->id] = $distances;
+    //         }
+
+    //         // Step 3b: Update centroids based on mean values
+    //         $newCentroids = [];
+    //         foreach ($clusters as $cluster) {
+    //             $newCentroids[] = $this->calculateMeanCentroid($cluster);
+    //         }
+
+    //         // Save the current iteration
+    //         $iterations[] = [
+    //             'clusters' => $clusters,
+    //             'centroids' => $centroids,
+    //             'distanceTable' => $distanceTable
+    //         ];
+
+    //         // Update hasil akhir untuk iterasi terakhir
+    //         $finalClusters = $clusters;
+    //         $finalCentroids = $centroids;
+    //         $finalDistanceTable = $distanceTable;
+
+    //         $converged = $this->checkConvergence($centroids, $newCentroids);
+    //         $centroids = $newCentroids;
+    //     }
+
+    //     $attributes = Attribute::all();
+
+    //     // Save final result to session
+    //     session([
+    //         'finalClusters' => $finalClusters,
+    //         'finalCentroids' => $finalCentroids,
+    //         'finalDistanceTable' => $finalDistanceTable
+    //     ]);
+
+    //     // Redirect ke halaman iterasi
+    //     return view('kmeans.iterations', compact('iterations', 'attributes'))
+    //         ->with('finalClusters', $finalClusters)
+    //         ->with('finalCentroids', $finalCentroids)
+    //         ->with('finalDistanceTable', $finalDistanceTable);
+    // }
+
     public function cluster(Request $request)
     {
         $k = $request->input('k');
@@ -37,6 +103,7 @@ class KMeansController extends Controller
         $finalClusters = [];
         $finalCentroids = [];
         $finalDistanceTable = [];
+        $clusterData = []; // Menyimpan data cluster untuk chart
 
         while (!$converged) {
             $clusters = [];
@@ -51,6 +118,18 @@ class KMeansController extends Controller
                 $closestCluster = array_search(min($distances), $distances);
                 $clusters[$closestCluster][] = $dataPoint;
                 $distanceTable[$dataPoint->id] = $distances;
+
+                // Menyimpan data untuk chart
+                $xValue = $dataPoint->attributes()->where('attribute_id', 10)->first()->pivot->value ?? null; // Ambil nilai untuk X
+                $yValue = $dataPoint->attributes()->where('attribute_id', 6)->first()->pivot->value ?? null; // Ambil nilai untuk Y
+
+                if ($xValue !== null && $yValue !== null) {
+                    $clusterData[$closestCluster][] = [
+                        'x' => $xValue, // Nilai untuk sumbu X
+                        'y' => $yValue, // Nilai untuk sumbu Y
+                        'name' => $dataPoint->name // Jika perlu, simpan nama
+                    ];
+                }
             }
 
             // Step 3b: Update centroids based on mean values
@@ -83,30 +162,34 @@ class KMeansController extends Controller
             'finalCentroids' => $finalCentroids,
             'finalDistanceTable' => $finalDistanceTable
         ]);
+        // Hitung jumlah data point untuk setiap cluster
+        $clusterCounts = array_map('count', $finalClusters);
 
         // Redirect ke halaman iterasi
         return view('kmeans.iterations', compact('iterations', 'attributes'))
             ->with('finalClusters', $finalClusters)
             ->with('finalCentroids', $finalCentroids)
-            ->with('finalDistanceTable', $finalDistanceTable);
+            ->with('finalDistanceTable', $finalDistanceTable)
+            ->with('clusterData', $clusterData) // Kirim data cluster untuk scatter chart
+            ->with('clusterCounts', $clusterCounts); // Kirim jumlah data point per cluster dougnut chart
     }
 
-    public function showFinalResult()
-    {
-        $attributes = Attribute::all();
+    // public function showFinalResult()
+    // {
+    //     $attributes = Attribute::all();
 
-        // Ambil data dari session
-        $finalClusters = session('finalClusters');
-        $finalCentroids = session('finalCentroids');
-        $finalDistanceTable = session('finalDistanceTable');
+    //     // Ambil data dari session
+    //     $finalClusters = session('finalClusters');
+    //     $finalCentroids = session('finalCentroids');
+    //     $finalDistanceTable = session('finalDistanceTable');
 
-        return view('kmeans.result', [
-            'finalClusters' => $finalClusters,
-            'finalCentroids' => $finalCentroids,
-            'finalDistanceTable' => $finalDistanceTable,
-            'attributes' => $attributes
-        ]);
-    }
+    //     return view('kmeans.result', [
+    //         'finalClusters' => $finalClusters,
+    //         'finalCentroids' => $finalCentroids,
+    //         'finalDistanceTable' => $finalDistanceTable,
+    //         'attributes' => $attributes
+    //     ]);
+    // }
 
 
     // Fungsi bantu untuk inisialisasi centroid dari input pengguna

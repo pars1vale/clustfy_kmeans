@@ -8,7 +8,7 @@ const data = {
     ],
     datasets: [{
         label: 'total Data ',
-        data: [78, 5, 75],
+        data: [78, 5, 71],
         backgroundColor: [
             'rgb(255, 99, 132)',
             'rgb(54, 162, 235)',

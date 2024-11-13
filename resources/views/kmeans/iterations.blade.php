@@ -15,6 +15,92 @@
       <h2 class="section-title">Iterations K-Means</h2>
       <p class="section-lead">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dolorum cumque repellendus voluptatibus unde possimus eius
         accusantium corporis? Fugiat dolorum harum corporis nobis perspiciatis, laboriosam et consectetur delectus rerum nam dolores!</p>
+      <div class="row">
+        <div class="col-12 col-md-6 col-lg-6">
+          <div class="card">
+            <div class="card-header">
+              <h4>Scatter Chart</h4><br>
+              <p class="section-lead">sumbu y adalah : Size-Logical Lines of Code (LLOC)</p><br>
+              <p class="section-lead">sumbu x adalah : Classes-Average Methods Per Class</p>
+            </div>
+            <div class="card-body">
+              <div class="chartjs-size-monitor"
+                style="position: absolute; inset: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;">
+                <div class="chartjs-size-monitor-expand"
+                  style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;">
+                  <div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div>
+                </div>
+                <div class="chartjs-size-monitor-shrink"
+                  style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;">
+                  <div style="position:absolute;width:200%;height:200%;left:0; top:0"></div>
+                </div>
+              </div>
+              <canvas id="scatter" width="200" height="196" style="display: block; width: 200px; height: 196px;"
+                class="chartjs-render-monitor"></canvas>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-6 col-lg-6">
+          <div class="card">
+            <div class="card-header">
+              <h4>Doughnut Chart</h4>
+            </div>
+            <div class="card-body">
+              <div class="chartjs-size-monitor"
+                style="position: absolute; inset: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;">
+                <div class="chartjs-size-monitor-expand"
+                  style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;">
+                  <div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div>
+                </div>
+                <div class="chartjs-size-monitor-shrink"
+                  style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;">
+                  <div style="position:absolute;width:200%;height:200%;left:0; top:0"></div>
+                </div>
+              </div>
+              <canvas id="doughnut" width="200" height="196" style="display: block; width: 200px; height: 196px;"
+                class="chartjs-render-monitor"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-12 col-lg-12">
+        <div class="card">
+          <div class="card-header">
+            <h3>Final Clustering Result</h3>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table border="1" class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    @for ($i = 1; $i <= count($finalCentroids); $i++)
+                      <th>Distance to Cluster {{ $i }}</th>
+                    @endfor
+                    <th>Assigned Cluster</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @foreach ($finalClusters as $clusterIndex => $cluster)
+                    @foreach ($cluster as $index => $dataPoint)
+                      <tr>
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ $dataPoint->name }}</td>
+                        @foreach ($finalDistanceTable[$dataPoint->id] as $centroidIndex => $distance)
+                          <td>{{ $distance }}</td>
+                        @endforeach
+                        <td>{{ $clusterIndex + 1 }}</td>
+                      </tr>
+                    @endforeach
+                  @endforeach
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="col-12 col-md-12 col-lg-12">
         @foreach ($iterations as $iterationIndex => $iteration)
           <div class="card">
@@ -89,32 +175,90 @@
         @endforeach
       </div>
     </div>
+  @endsection
 
-    <h3>Final Clustering Result</h3>
-    <table border="1">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Name</th>
-          @for ($i = 1; $i <= count($finalCentroids); $i++)
-            <th>Distance to Cluster {{ $i }}</th>
-          @endfor
-          <th>Assigned Cluster</th>
-        </tr>
-      </thead>
-      <tbody>
-        @foreach ($finalClusters as $clusterIndex => $cluster)
-          @foreach ($cluster as $index => $dataPoint)
-            <tr>
-              <td>{{ $index + 1 }}</td>
-              <td>{{ $dataPoint->name }}</td>
-              @foreach ($finalDistanceTable[$dataPoint->id] as $centroidIndex => $distance)
-                <td>{{ $distance }}</td>
-              @endforeach
-              <td>{{ $clusterIndex + 1 }}</td>
-            </tr>
-          @endforeach
-        @endforeach
-      </tbody>
-    </table>
+  @section('page_js')
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.6/dist/chart.umd.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        const clusters = @json($clusterData); // Mengambil data dari controller
+
+        const datasets = clusters.map((cluster, index) => {
+          return {
+            label: `Cluster ${ index + 1}`,
+            data: cluster.map(point => ({
+              x: point.x,
+              y: point.y
+            })),
+            backgroundColor: `rgba(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255}, 0.5)`,
+            borderColor: `rgba(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255}, 1)`,
+            borderWidth: 1
+          };
+        });
+
+        const data = {
+          datasets: datasets,
+        };
+
+        const config = {
+          type: 'scatter',
+          data: data,
+          options: {
+            scales: {
+              x: {
+                type: 'linear',
+                position: 'bottom'
+              },
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        };
+
+        new Chart(
+          document.getElementById('scatter'),
+          config
+        );
+      });
+    </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+
+        // Ambil data jumlah cluster dari PHP
+        const clusterCounts = @json($clusterCounts); // Mengonversi data PHP ke JavaScript
+
+        // Buat label untuk cluster
+        const labels = clusterCounts.map((_, index) => `Cluster ${index + 1}`);
+
+        const data = {
+          labels: labels,
+          datasets: [{
+            label: 'Total Data',
+            data: clusterCounts, // Data jumlah setiap cluster
+            backgroundColor: [
+              'rgb(255, 99, 132)',
+              'rgb(54, 162, 235)',
+              'rgb(255, 205, 86)',
+              'rgb(75, 192, 192)',
+              'rgb(153, 102, 255)',
+              'rgb(255, 159, 64)',
+              // Tambahkan lebih banyak warna jika ada lebih banyak cluster
+            ],
+            hoverOffset: 4,
+            weight: 200
+          }]
+        };
+
+        const config = {
+          type: 'doughnut',
+          data: data,
+        };
+
+        new Chart(
+          document.getElementById('doughnut'),
+          config
+        );
+      });
+    </script>
   @endsection
