@@ -1,17 +1,33 @@
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="light">
+<!-- saved from url=(0049)https://getbootstrap.com/docs/5.3/examples/cover/ -->
+<html lang="en" class="h-100" data-bs-theme="light">
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <script src="{{ asset('assets/landingpage/sectionlanding_files/color-modes.js.download') }}"></script>
+  <script src="{{ asset('assets/landingpage/landing_files/color-modes.js.download') }}"></script>
+
+
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Clusify</title>
-  <link rel="stylesheet" href="{{ asset('assets/landingpage/sectionlanding_files/css@3') }}">
-  <link href="{{ asset('assets/landingpage/sectionlanding_files/bootstrap.min.css') }}" rel="stylesheet"
+  <meta name="description" content="">
+  <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+  <meta name="generator" content="Hugo 0.122.0">
+  <title>Cluster</title>
+
+  <link rel="stylesheet" href="{{ asset('assets/landingpage/landing_files/css@3') }}">
+
+  <link href="{{ asset('assets/landingpage/landing_files/bootstrap.min.css') }}" rel="stylesheet"
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
   <!-- Favicons -->
+  <link rel="apple-touch-icon" href="https://getbootstrap.com/docs/5.3/assets/img/favicons/apple-touch-icon.png" sizes="180x180">
+  <link rel="icon" href="https://getbootstrap.com/docs/5.3/assets/img/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
+  <link rel="icon" href="https://getbootstrap.com/docs/5.3/assets/img/favicons/favicon-16x16.png" sizes="16x16" type="image/png">
   <link rel="manifest" href="https://getbootstrap.com/docs/5.3/assets/img/favicons/manifest.json">
+  <link rel="mask-icon" href="https://getbootstrap.com/docs/5.3/assets/img/favicons/safari-pinned-tab.svg" color="#712cf9">
+  <link rel="icon" href="https://getbootstrap.com/docs/5.3/assets/img/favicons/favicon.ico">
   <meta name="theme-color" content="#712cf9">
+
+
   <style>
     .bd-placeholder-img {
       font-size: 1.125rem;
@@ -90,61 +106,22 @@
       display: block !important;
     }
   </style>
+
+
   <!-- Custom styles for this template -->
-  <link href="{{ asset('assets/landingpage/sectionlanding_files/carousel.css') }}" rel="stylesheet">
+  <link href="{{ asset('assets/landingpage/landing_files/cover.css') }}" rel="stylesheet">
+  <script src="chrome-extension://mooikfkahbdckldjjndioackbalphokd/assets/prompt.js"></script>
 </head>
 
-<body>
-  <div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
-    <button class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center" id="bd-theme" type="button" aria-expanded="false"
-      data-bs-toggle="dropdown" aria-label="Toggle theme (light)">
-      <svg class="bi my-1 theme-icon-active" width="1em" height="1em">
-        <use href="#sun-fill"></use>
-      </svg>
-      <span class="visually-hidden" id="bd-theme-text">Toggle theme</span>
-    </button>
-    <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="bd-theme-text">
-      <li>
-        <button type="button" class="dropdown-item d-flex align-items-center active" data-bs-theme-value="light" aria-pressed="true">
-          <svg class="bi me-2 opacity-50" width="1em" height="1em">
-            <use href="#sun-fill"></use>
-          </svg>
-          Light
-          <svg class="bi ms-auto d-none" width="1em" height="1em">
-            <use href="#check2"></use>
-          </svg>
-        </button>
-      </li>
-      <li>
-        <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark" aria-pressed="false">
-          <svg class="bi me-2 opacity-50" width="1em" height="1em">
-            <use href="#moon-stars-fill"></use>
-          </svg>
-          Dark
-          <svg class="bi ms-auto d-none" width="1em" height="1em">
-            <use href="#check2"></use>
-          </svg>
-        </button>
-      </li>
-      <li>
-        <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="auto" aria-pressed="false">
-          <svg class="bi me-2 opacity-50" width="1em" height="1em">
-            <use href="#circle-half"></use>
-          </svg>
-          Auto
-          <svg class="bi ms-auto d-none" width="1em" height="1em">
-            <use href="#check2"></use>
-          </svg>
-        </button>
-      </li>
-    </ul>
-  </div>
-  @include('layouts.frontend.navbar')
-  <main>
+<body class="d-flex h-100 text-center text-bg-dark">
+  <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+    @include('layouts.frontend.navbar')
+
     @yield('content')
+
     @include('layouts.frontend.footer')
-  </main>
-  <script src="{{ asset('assets/landingpage/sectionlanding_files/bootstrap.bundle.min.js.download') }}"
+  </div>
+  <script src="{{ asset('assets/landingpage/landing_files/bootstrap.bundle.min.js.download') }}"
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
 </body>

@@ -1,42 +1,18 @@
-<header data-bs-theme="dark">
-  <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-    <div class="container">
-      <a class="navbar-brand" href="">Clusify</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse"
-        aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarCollapse">
-        <ul class="navbar-nav me-auto mb-2 mb-md-0">
-
-          @if (Route::has('login'))
-            @auth
-              <li class="nav-item">
-                <a class="nav-link" href="{{ route('home') }}">Dashboard</a>
-              </li>
-            @else
-              <li class="nav-item">
-                <a class="nav-link" href="{{ route('login') }}">Log In</a>
-              </li>
-              @if (Route::has('register'))
-                <li class="nav-item">
-                  <a class="nav-link" href="{{ route('register') }}">Register</a>
-                </li>
-              @endif
-            @endauth
+</header>
+<header class="mb-auto">
+  <div>
+    <h3 class="float-md-start mb-0">Cover</h3>
+    <nav class="nav nav-masthead justify-content-center float-md-end">
+      @if (Route::has('login'))
+        @auth
+          <a class="nav-link fw-bold py-1 px-0 " aria-current="page" href="{{ route('home') }}">Dashboard</a>
+        @else
+          <a class="nav-link fw-bold py-1 px-0" href="{{ route('login') }}">Login</a>
+          @if (Route::has('register'))
+            <a class="nav-link fw-bold py-1 px-0" href="{{ route('register') }}">Contact</a>
           @endif
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Clustering
-            </a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">Do Clustering</a></li>
-              <li><a class="dropdown-item" href="#">Datapoints</a></li>
-              <li><a class="dropdown-item" href="#">Attributes</a></li>
-            </ul>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+        @endauth
+      @endif
+    </nav>
+  </div>
 </header>
