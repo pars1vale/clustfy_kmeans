@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('datapoint_id');
             $table->unsignedBigInteger('attribute_id');
-            $table->float('value'); // Nilai dari atribut untuk setiap datapoint
+            $table->float('value', 12, 2); // Nilai dari atribut untuk setiap datapoint
             $table->timestamps();
 
             // Foreign key constraints

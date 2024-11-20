@@ -35,7 +35,7 @@
                   <div style="position:absolute;width:200%;height:200%;left:0; top:0"></div>
                 </div>
               </div>
-              <canvas id="scatter" width="200" height="196" style="display: block; width: 200px; height: 196px;"
+              <canvas id="scatterChart" width="200" height="196" style="display: block; width: 200px; height: 196px;"
                 class="chartjs-render-monitor"></canvas>
             </div>
           </div>
@@ -180,48 +180,56 @@
   @section('page_js')
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.6/dist/chart.umd.min.js"></script>
     <script>
-      document.addEventListener("DOMContentLoaded", function() {
-        const clusters = @json($clusterData); // Mengambil data dari controller
-
-        const datasets = clusters.map((cluster, index) => {
-          return {
-            label: `Cluster ${ index + 1}`,
-            data: cluster.map(point => ({
-              x: point.x,
-              y: point.y
-            })),
-            backgroundColor: `rgba(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255}, 0.5)`,
-            borderColor: `rgba(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255}, 1)`,
-            borderWidth: 1
-          };
-        });
-
-        const data = {
-          datasets: datasets,
-        };
-
-        const config = {
-          type: 'scatter',
-          data: data,
-          options: {
-            scales: {
-              x: {
-                type: 'linear',
-                position: 'bottom'
-              },
-              y: {
-                beginAtZero: true
+      var clusterData = @json($clusterData);
+    </script>
+    <script>
+      var ctx = document.getElementById('scatterChart').getContext('2d');
+      var scatterChart = new Chart(ctx, {
+        type: 'scatter',
+        data: {
+          datasets: Object.keys(clusterData).map(function(clusterIndex) {
+            return {
+              label: 'Cluster ' + clusterIndex,
+              data: clusterData[clusterIndex].map(function(dataPoint) {
+                return {
+                  x: dataPoint.x, // nilai untuk sumbu X
+                  y: dataPoint.y, // nilai untuk sumbu Y
+                  label: dataPoint.name // nama data point (opsional)
+                };
+              }),
+              backgroundColor: randomColor(), // Atur warna untuk setiap cluster
+            };
+          })
+        },
+        options: {
+          responsive: true,
+          scales: {
+            x: {
+              type: 'linear',
+              position: 'bottom'
+            },
+            y: {
+              type: 'linear',
+            }
+          },
+          plugins: {
+            tooltip: {
+              callbacks: {
+                label: function(tooltipItem) {
+                  return 'Nama: ' + tooltipItem.raw.label + ' | X: ' + tooltipItem.raw.x + ' | Y: ' + tooltipItem.raw.y;
+                }
               }
             }
           }
-        };
-
-        new Chart(
-          document.getElementById('scatter'),
-          config
-        );
+        }
       });
+
+      // Fungsi untuk menghasilkan warna acak
+      function randomColor() {
+        return 'rgba(' + Math.floor(Math.random() * 256) + ',' + Math.floor(Math.random() * 256) + ',' + Math.floor(Math.random() * 256) + ', 0.6)';
+      }
     </script>
+
     <script>
       document.addEventListener("DOMContentLoaded", function() {
 

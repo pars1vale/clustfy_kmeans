@@ -21,7 +21,7 @@
           </div>
           <div class="card-body">
             <div class="buttons">
-              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Aw, yeah!</button>
+              {{-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Aw, yeah!</button> --}}
               <a href="{{ route('attributes.create') }}" class="btn btn-icon icon-left btn-primary"><i class="fas fa-plus"></i> add atribute</a>
               <a href="#" class="btn btn-outline-primary">export as PDF</a>
               <a href="#" class="btn btn-outline-primary">export as CSV/.xls</a>
@@ -61,7 +61,7 @@
     </div>
   </section>
 
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  {{-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -79,7 +79,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> --}}
 @endsection
 
 @section('plugins_js')

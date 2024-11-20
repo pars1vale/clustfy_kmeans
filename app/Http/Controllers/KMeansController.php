@@ -25,72 +25,6 @@ class KMeansController extends Controller
     }
 
     // Step 3: Proses K-Means Clustering
-    // public function cluster(Request $request)
-    // {
-    //     $k = $request->input('k');
-    //     $centroids = $this->initializeCentroidsFromInput($request);
-    //     $dataPoints = Datapoint::with('attributes')->get();
-    //     $converged = false;
-    //     $iterations = []; // Array to store each iteration result
-
-    //     // Variabel untuk menyimpan hasil akhir
-    //     $finalClusters = [];
-    //     $finalCentroids = [];
-    //     $finalDistanceTable = [];
-
-    //     while (!$converged) {
-    //         $clusters = [];
-    //         $distanceTable = [];
-
-    //         // Step 3a: Assign each data point to the nearest centroid
-    //         foreach ($dataPoints as $dataPoint) {
-    //             $distances = [];
-    //             foreach ($centroids as $index => $centroid) {
-    //                 $distances[$index] = $this->calculateEuclideanDistance($dataPoint, $centroid);
-    //             }
-    //             $closestCluster = array_search(min($distances), $distances);
-    //             $clusters[$closestCluster][] = $dataPoint;
-    //             $distanceTable[$dataPoint->id] = $distances;
-    //         }
-
-    //         // Step 3b: Update centroids based on mean values
-    //         $newCentroids = [];
-    //         foreach ($clusters as $cluster) {
-    //             $newCentroids[] = $this->calculateMeanCentroid($cluster);
-    //         }
-
-    //         // Save the current iteration
-    //         $iterations[] = [
-    //             'clusters' => $clusters,
-    //             'centroids' => $centroids,
-    //             'distanceTable' => $distanceTable
-    //         ];
-
-    //         // Update hasil akhir untuk iterasi terakhir
-    //         $finalClusters = $clusters;
-    //         $finalCentroids = $centroids;
-    //         $finalDistanceTable = $distanceTable;
-
-    //         $converged = $this->checkConvergence($centroids, $newCentroids);
-    //         $centroids = $newCentroids;
-    //     }
-
-    //     $attributes = Attribute::all();
-
-    //     // Save final result to session
-    //     session([
-    //         'finalClusters' => $finalClusters,
-    //         'finalCentroids' => $finalCentroids,
-    //         'finalDistanceTable' => $finalDistanceTable
-    //     ]);
-
-    //     // Redirect ke halaman iterasi
-    //     return view('kmeans.iterations', compact('iterations', 'attributes'))
-    //         ->with('finalClusters', $finalClusters)
-    //         ->with('finalCentroids', $finalCentroids)
-    //         ->with('finalDistanceTable', $finalDistanceTable);
-    // }
-
     public function cluster(Request $request)
     {
         $k = $request->input('k');
@@ -105,6 +39,7 @@ class KMeansController extends Controller
         $finalDistanceTable = [];
         $clusterData = []; // Menyimpan data cluster untuk chart
 
+        // Proses iterasi clustering
         while (!$converged) {
             $clusters = [];
             $distanceTable = [];
@@ -162,34 +97,20 @@ class KMeansController extends Controller
             'finalCentroids' => $finalCentroids,
             'finalDistanceTable' => $finalDistanceTable
         ]);
+
         // Hitung jumlah data point untuk setiap cluster
         $clusterCounts = array_map('count', $finalClusters);
 
-        // Redirect ke halaman iterasi
+        // Redirect ke halaman iterasi dan kirimkan data cluster untuk scatter chart
         return view('kmeans.iterations', compact('iterations', 'attributes'))
             ->with('finalClusters', $finalClusters)
             ->with('finalCentroids', $finalCentroids)
             ->with('finalDistanceTable', $finalDistanceTable)
             ->with('clusterData', $clusterData) // Kirim data cluster untuk scatter chart
-            ->with('clusterCounts', $clusterCounts); // Kirim jumlah data point per cluster dougnut chart
+            ->with('clusterCounts', $clusterCounts); // Kirim jumlah data point per cluster untuk donut chart
     }
 
-    // public function showFinalResult()
-    // {
-    //     $attributes = Attribute::all();
 
-    //     // Ambil data dari session
-    //     $finalClusters = session('finalClusters');
-    //     $finalCentroids = session('finalCentroids');
-    //     $finalDistanceTable = session('finalDistanceTable');
-
-    //     return view('kmeans.result', [
-    //         'finalClusters' => $finalClusters,
-    //         'finalCentroids' => $finalCentroids,
-    //         'finalDistanceTable' => $finalDistanceTable,
-    //         'attributes' => $attributes
-    //     ]);
-    // }
 
 
     // Fungsi bantu untuk inisialisasi centroid dari input pengguna
