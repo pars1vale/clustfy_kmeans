@@ -4,6 +4,7 @@ use App\Http\Controllers\AttributeController;
 use App\Http\Controllers\DatapointController;
 use App\Http\Controllers\KMeansController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\PDFController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -19,8 +20,10 @@ Route::resource('datapoints', DatapointController::class)->names('datapoints');
 Route::resource('users', UserController::class)->names('users')->only(['index']);
 
 
-
 Route::get('/kmeans/select-cluster', [KMeansController::class, 'showClusterModal'])->name('kmeans.select_cluster');
 Route::post('/kmeans/initialize-centroids', [KMeansController::class, 'initializeCentroids'])->name('kmeans.initialize_centroids');
 Route::post('/kmeans/cluster-iterations', [KMeansController::class, 'cluster'])->name('kmeans.cluster_iterations');
 // Route::get('/kmeans/result', [KMeansController::class, 'showFinalResult'])->name('kmeans.result');
+
+Route::get('/attribute-pdf', [PDFController::class, 'attributePDF'])->name('attribute_pdf');
+Route::get('/datapoint-pdf', [PDFController::class, 'datapointPDF'])->name('datapoint_pdf');
