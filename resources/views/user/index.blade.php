@@ -30,7 +30,7 @@
                     <th>Name</th>
                     <th>Email</th>
                     <th>Email Verified At</th>
-                    <th>Action</th>
+                    {{-- <th>Action</th> --}}
                   </tr>
                 </thead>
                 <tbody>

@@ -1,7 +1,7 @@
 </header>
 <header class="mb-auto">
   <div>
-    <h3 class="float-md-start mb-0">Cover</h3>
+    <h3 class="float-md-start mb-0">Clustering</h3>
     <nav class="nav nav-masthead justify-content-center float-md-end">
       @if (Route::has('login'))
         @auth
@@ -9,7 +9,7 @@
         @else
           <a class="nav-link fw-bold py-1 px-0" href="{{ route('login') }}">Login</a>
           @if (Route::has('register'))
-            <a class="nav-link fw-bold py-1 px-0" href="{{ route('register') }}">Contact</a>
+            <a class="nav-link fw-bold py-1 px-0" href="{{ route('register') }}">Register</a>
           @endif
         @endauth
       @endif
