@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AttributeController;
 use App\Http\Controllers\DatapointController;
+use App\Http\Controllers\ExcelExportController;
 use App\Http\Controllers\KMeansController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PDFController;
@@ -40,3 +41,6 @@ Route::post('/kmeans/cluster-iterations', [KMeansController::class, 'cluster'])-
 Route::get('/attribute-pdf', [PDFController::class, 'attributePDF'])->name('attribute_pdf');
 Route::get('/datapoint-pdf', [PDFController::class, 'datapointPDF'])->name('datapoint_pdf');
 Route::get('/landscape-pdf', [PDFController::class, 'lanscapePdfTest'])->name('landscapePDF');
+
+Route::get('attribute/export/excel', [ExcelExportController::class, 'export'])->name('attribute.export.excel');
+Route::get('datapoint/export/excel', [ExcelExportController::class, 'exportDatapoint'])->name('datapoint.export.excel');

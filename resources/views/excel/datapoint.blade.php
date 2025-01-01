@@ -1,9 +1,19 @@
+<!-- filepath: /D:/ITN/SKRIPSI/clustfy_kmeans/resources/views/exports/datapoint.blade.php -->
 <!DOCTYPE html>
 <html>
 
 <head>
-  <h1>{{ $data['title'] }}</h1>
   <style>
+    /* Global Styles */
+    body {
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      line-height: 1.6;
+      color: #333;
+      margin: 0;
+      padding: 20px;
+    }
+
     h1 {
       text-align: center;
       font-size: 16px;
@@ -42,22 +52,12 @@
     table tr:hover {
       background-color: #f1f1f1;
     }
-
-    /* Page Margins */
-    @page {
-      margin: 20px;
-    }
-
-    /* PDF-specific adjustments */
-    body {
-      margin: 10px;
-    }
   </style>
 </head>
 
 <body>
   <h1>{{ $data['title'] }}</h1>
-  <p>PDF Download: {{ $data['current_date_time'] }}</p>
+  <p>Excel Download: {{ $data['current_date_time'] }}</p>
   <table class="table table-bordered">
     <thead>
       <tr>
@@ -66,7 +66,7 @@
         <th>Type</th>
         @foreach ($attributes as $attribute)
           <th>{{ $attribute->name }}</th>
-        @endforeach$pdf = PDF::loadView('pdf.datapoint', compact('data', 'datapoints', 'attributes'));
+        @endforeach
       </tr>
     </thead>
     <tbody>
